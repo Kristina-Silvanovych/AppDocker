@@ -7,17 +7,14 @@ metadata:
 spec:
   containers:
     - name: webapp
-      image: appdocker:dev
+      image: kristinasilvanovych/appdockerps:dev
       ports:
         - containerPort: 8080
-      env:
-        - name: ASPNETCORE_ENVIRONMENT
-          value: "Development"
-        - name: ASPNETCORE_URLS
-          value: "http://+:8080"
-      command: ["sh", "-c", "dotnet ef database update --project AppDocker && dotnet AppDocker.dll"]
+      volumeMounts:
+        - name: empty-volume
+          mountPath: /empty-2 
     - name: postgres
-      image: postgres:latest
+      image: kristinasilvanovych/postgreswb
       env:
         - name: POSTGRES_DB
           value: "db"
@@ -27,27 +24,9 @@ spec:
           value: "postgres"
       ports:
         - containerPort: 5432
-
-# apiVersion: v1
-# kind: Pod
-# metadata:
-#   name: appdocker-pod
-# spec:
-#   containers:
-#     - name: webapp
-#       image: appdocker:dev
-#       ports:
-#         - containerPort: 8080
-#     - name: postgres
-#       image: postgres:latest
-#       env:
-#         - name: POSTGRES_PASSWORD
-#           value: "postgres"
-#       ports:
-#         - containerPort: 5432
-#       volumeMounts:
-#         - name: empty-volume
-#           mountPath: /empty
-#   volumes:
-#     - name: empty-volume
-#       emptyDir: {}
+      volumeMounts:
+        - name: empty-volume
+          mountPath: /empty-1       
+  volumes:
+    - name: empty-volume
+      emptyDir: {}
