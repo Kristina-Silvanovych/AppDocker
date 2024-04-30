@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres-pod
+spec:
+  containers:
+    - name: postgres
+      image: kristinasilvanovych/postgress
+      env:
+        - name: POSTGRES_DB
+          value: "db"
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          value: "postgres"
+      ports:
+        - containerPort: 5432
+      volumeMounts:
+        - mountPath: /postgres-data
+          name: hostpath-volume
+  volumes:
+    - name: hostpath-volume
+      hostPath: 
+        path: /data
+        type: DirectoryOrCreate
+
